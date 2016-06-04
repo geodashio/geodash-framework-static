@@ -1,0 +1,47 @@
+---
+controllers:
+  - controller_base.js
+directives:
+  - svg.js
+  - onRepeatDone.js
+  - geodashModalDashboardConfig.js
+enumerations:
+  - dates.js
+templates:
+  - geodash_modal_dashboard_config.tpl.html
+filters:
+  - default.js
+  - join.js
+  - first.js
+  - last.js
+  - formatInteger.js
+  - formatArray.js
+  - formatMonth.js
+  - md2html.js
+  - percent.js
+  - tabLabel.js
+  - as_float.js
+  - choose.js
+  - add.js
+  - default_if_undefined.js
+  - title.js
+  - as_array.js
+  - sortItemsByArray.js
+  - url_shapefile.js
+  - url_geojson.js
+  - url_kml.js
+  - url_describefeaturetype.js
+  - breakpoint.js
+  - breakpoints.js
+  - formatBreakpoint.js
+  - formatFloat.js
+  - position_x.js
+  - width_x.js
+  - length.js
+  - layer_is_visible.js
+  - ternary.js
+  - common/extract.js
+  - common/inArray.js
+  - common/yaml.js
+  - common/replace.js
+  - common/prepend.js
