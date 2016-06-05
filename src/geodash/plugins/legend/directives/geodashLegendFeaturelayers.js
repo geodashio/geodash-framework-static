@@ -1,4 +1,4 @@
-geosite.directives["geositeLegendFeaturelayers"] = function(){
+geodash.directives["geodashLegendFeaturelayers"] = function(){
   return {
     restrict: 'EA',
     replace: true,

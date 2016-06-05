@@ -77,8 +77,8 @@ var flatten_configs = function(n)
 
 var configs = flatten_configs(load_config("./config.yml"));
 
-var geosite_projects = [];
-var geosite_plugins = [];
+var geodash_projects = [];
+var geodash_plugins = [];
 
 var compile_templates = [];
 var compile_enumerations = [];
@@ -93,7 +93,7 @@ for(var i = 0; i < configs.length; i++)
 {
   var config = configs[i];
 
-  var path_plugins = path.join(config.path.base, config.path.geosite, "plugins")
+  var path_plugins = path.join(config.path.base, config.path.geodash, "plugins")
 
   var project_templates = [];  // Exported to the compile process
   var project_enumerations = []; // Exported to the compile process
@@ -105,10 +105,10 @@ for(var i = 0; i < configs.length; i++)
   {
     var pluginPath = path.join(path_plugins, config["plugins"][j], "config.yml");
 
-    var geosite_plugin = require(pluginPath[0] == "/" ? pluginPath : ("./"+ pluginPath));
-    geosite_plugin["id"] = config["plugins"][j];
+    var geodash_plugin = require(pluginPath[0] == "/" ? pluginPath : ("./"+ pluginPath));
+    geodash_plugin["id"] = config["plugins"][j];
 
-    var files = collect_files_all(path_plugins, geosite_plugin,
+    var files = collect_files_all(path_plugins, geodash_plugin,
       ["enumerations", "filters", "controllers", "directives", "templates"]);
 
     project_templates = project_templates.concat(files["templates"]);
@@ -199,8 +199,8 @@ gulp.task('compile', function(){
         {
             gulp.src(t.src)
                 .pipe(templateCache('templates.js', {
-                  templateHeader: 'geosite.templates = {};\n',
-                  templateBody: 'geosite.templates["<%= url %>"] = "<%= contents %>";',
+                  templateHeader: 'geodash.templates = {};\n',
+                  templateBody: 'geodash.templates["<%= url %>"] = "<%= contents %>";',
                   templateFooter: '\n'
                 }))
                 .pipe(gulp.dest(t.dest));
@@ -208,12 +208,12 @@ gulp.task('compile', function(){
     }
 });
 
-gulp.task('geosite:templates', function(){
+gulp.task('geodash:templates', function(){
 
   return gulp.src(compile_templates)
       .pipe(templateCache('templates.js', {
-        templateHeader: 'geosite.templates = {};\n',
-        templateBody: 'geosite.templates["<%= url %>"] = "<%= contents %>";',
+        templateHeader: 'geodash.templates = {};\n',
+        templateBody: 'geodash.templates["<%= url %>"] = "<%= contents %>";',
         templateFooter: '\n'
       }))
       .pipe(gulp.dest("./build/templates/"));
@@ -244,7 +244,7 @@ gulp.task('test', function(){
     }
 });
 
-gulp.task('default', ['clean', 'copy', 'geosite:templates', 'compile']);
+gulp.task('default', ['clean', 'copy', 'geodash:templates', 'compile']);
 
 gulp.task('bootstrap:clean', function() {
     return del([

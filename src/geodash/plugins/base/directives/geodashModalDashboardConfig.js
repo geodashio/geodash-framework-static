@@ -1,4 +1,4 @@
-geosite.directives["geodashModalDashboardConfig"] = function(){
+geodash.directives["geodashModalDashboardConfig"] = function(){
   return {
     restrict: 'EA',
     replace: true,

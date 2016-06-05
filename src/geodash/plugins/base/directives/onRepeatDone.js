@@ -1,4 +1,4 @@
-geosite.directives["onRepeatDone"] = function(){
+geodash.directives["onRepeatDone"] = function(){
   return {
     restriction: 'A',
     link: function($scope, element, attributes ) {

@@ -1,4 +1,4 @@
-geosite.directives["geositeModalLayerCarto"] = function(){
+geodash.directives["geodashModalLayerCarto"] = function(){
   return {
     restrict: 'EA',
     replace: true,

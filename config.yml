@@ -4,9 +4,7 @@ path:
   geodash: "./src/geodash"
 plugins:
   - base
-  - modal
   - legend
-  - map
   - welcome
   - about
   - download

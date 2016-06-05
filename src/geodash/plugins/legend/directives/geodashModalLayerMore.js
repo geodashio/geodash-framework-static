@@ -1,4 +1,4 @@
-geosite.directives["geositeModalLayerMore"] = function(){
+geodash.directives["geodashModalLayerMore"] = function(){
   return {
     restrict: 'EA',
     replace: true,

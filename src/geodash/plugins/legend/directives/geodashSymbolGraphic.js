@@ -1,4 +1,4 @@
-geosite.directives["geositeSymbolGraphic"] = function(){
+geodash.directives["geodashSymbolGraphic"] = function(){
   return {
     restrict: 'EA',
     replace: true,

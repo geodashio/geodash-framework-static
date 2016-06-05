@@ -1,4 +1,4 @@
-geosite.directives["geositeModalAbout"] = function(){
+geodash.directives["geodashModalAbout"] = function(){
   return {
     restrict: 'EA',
     replace: true,

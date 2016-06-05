@@ -1,4 +1,4 @@
-geosite.directives["ngX"] = function(){
+geodash.directives["ngX"] = function(){
   return {
     scope: true,
     link: function ($scope, $element, attrs){
@@ -8,7 +8,7 @@ geosite.directives["ngX"] = function(){
     }
   };
 };
-geosite.directives["ngY"] = function(){
+geodash.directives["ngY"] = function(){
   return {
     scope: true,
     link: function ($scope, $element, attrs){
@@ -18,7 +18,7 @@ geosite.directives["ngY"] = function(){
     }
   };
 };
-geosite.directives["ngWidth"] = function(){
+geodash.directives["ngWidth"] = function(){
   return {
     scope: true,
     link: function ($scope, $element, attrs){
@@ -28,7 +28,7 @@ geosite.directives["ngWidth"] = function(){
     }
   };
 };
-geosite.directives["ngR"] = function(){
+geodash.directives["ngR"] = function(){
   return {
     scope: true,
     link: function ($scope, $element, attrs){
@@ -38,7 +38,7 @@ geosite.directives["ngR"] = function(){
     }
   };
 };
-geosite.directives["ngFill"] = function(){
+geodash.directives["ngFill"] = function(){
   return {
     scope: true,
     link: function ($scope, $element, attrs){

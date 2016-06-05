@@ -1,4 +1,4 @@
-geosite.directives["stopEvent"] = function(){
+geodash.directives["stopEvent"] = function(){
   return {
     restrict: 'EA',
     link: function(scope, element, attr){

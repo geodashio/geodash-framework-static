@@ -1,4 +1,4 @@
-geosite.directives["geositeSymbolCircle"] = function(){
+geodash.directives["geodashSymbolCircle"] = function(){
   return {
     restrict: 'EA',
     replace: true,

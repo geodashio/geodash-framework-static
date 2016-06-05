@@ -14,12 +14,12 @@
             ng-class="$first ? 'active' : ''"
             ng-repeat="style in layer.cartography track by $index">
             <a
-              class="geosite-intent"
+              class="geodash-intent"
               href="#modal-layer-carto-style-{{ style.id }}"
               aria-controls="modal-layer-carto-style-{{ style.id }}"
               data-intent-name="selectStyle"
               data-intent-data="{&quot;layer&quot;:&quot;{{ layerID }}&quot;,&quot;style&quot;:&quot;{{ style.id }}&quot;}"
-              data-intent-ctrl="geosite-map-legend"
+              data-intent-ctrl="geodash-map-legend"
               role="tab"
               data-toggle="tab"
               style="padding-left:8px; padding-right: 8px;"
@@ -41,18 +41,18 @@
             <br>
             <div
               ng-if="style.type == 'graduated'"
-              geosite-symbol-graduated
+              geodash-symbol-graduated
               style="style"
               container-width="{{ '392px' }}">
             </div>
             <div
               ng-if="style.legend.symbol.type == 'circle'"
-              geosite-symbol-circle
+              geodash-symbol-circle
               style="style">
             </div>
             <div
               ng-if="style.legend.symbol.type == 'graphic'"
-              geosite-symbol-graphic
+              geodash-symbol-graphic
               style="style">
             </div>
           </div>
