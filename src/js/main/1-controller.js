@@ -1,6 +1,6 @@
 geodash.init_controller_base = function(app)
 {
-  app.controller("GeositeControllerBase", geodash.controllers.controller_base);
+  app.controller("GeoDashControllerBase", geodash.controllers.controller_base);
 };
 
 geodash.init_controller = function(that, app, controller)

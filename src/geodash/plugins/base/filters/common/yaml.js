@@ -1,10 +1,10 @@
 geodash.filters["yaml"] = function()
 {
-  return function(value)
+  return function(value, depth)
   {
     if(value != undefined)
     {
-      return YAML.stringify(value, 4);
+      return YAML.stringify(value, (depth || 4));
     }
     else
     {

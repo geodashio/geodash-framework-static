@@ -1,8 +1,8 @@
-<div class="modal-dialog" role="document">
+<div class="modal-dialog geodash-responsive" role="document">
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-      <h4 class="modal-title" id="myModalLabel">Dashboard Config / {{ map_config.title }}</h4>
+      <h4 class="modal-title" id="myModalLabel">Configuration / {{ map_config.title }}</h4>
     </div>
     <div class="modal-body">
       <div>
@@ -10,19 +10,43 @@
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" class="active">
             <a
-              href="#modal-dashboard-config-formatted"
-              aria-controls="modal-dashboard-config-formatted"
+              href="#modal-dashboard-config-projects"
+              aria-controls="modal-dashboard-config-projects"
               role="tab"
               data-toggle="tab"
-              style="padding-left:8px; padding-right: 8px;">Formatted</a>
+              style="padding-left:8px; padding-right: 8px;">Projects</a>
           </li>
           <li role="presentation" class="">
             <a
-              href="#modal-dashboard-config-json"
-              aria-controls="modal-dashboard-config-json"
+              href="#modal-dashboard-config-plugins"
+              aria-controls="modal-dashboard-config-plugins"
               role="tab"
               data-toggle="tab"
-              style="padding-left:8px; padding-right: 8px;">JSON</a>
+              style="padding-left:8px; padding-right: 8px;">Plugins</a>
+          </li>
+          <li role="presentation" class="">
+            <a
+              href="#modal-dashboard-config-directives"
+              aria-controls="modal-dashboard-config-directives"
+              role="tab"
+              data-toggle="tab"
+              style="padding-left:8px; padding-right: 8px;">Directives</a>
+          </li>
+          <li role="presentation" class="">
+            <a
+              href="#modal-dashboard-config-templates"
+              aria-controls="modal-dashboard-config-templates"
+              role="tab"
+              data-toggle="tab"
+              style="padding-left:8px; padding-right: 8px;">Templates</a>
+          </li>
+          <li role="presentation" class="">
+            <a
+              href="#modal-dashboard-config-filters"
+              aria-controls="modal-dashboard-config-filters"
+              role="tab"
+              data-toggle="tab"
+              style="padding-left:8px; padding-right: 8px;">Filters</a>
           </li>
           <li role="presentation" class="">
             <a
@@ -32,27 +56,144 @@
               data-toggle="tab"
               style="padding-left:8px; padding-right: 8px;">YAML</a>
           </li>
+          <li role="presentation" class="">
+            <a
+              href="#modal-dashboard-config-json"
+              aria-controls="modal-dashboard-config-json"
+              role="tab"
+              data-toggle="tab"
+              style="padding-left:8px; padding-right: 8px;">JSON</a>
+          </li>
         </ul>
         <div class="tab-content">
           <div
-            id="modal-dashboard-config-formatted"
+            id="modal-dashboard-config-projects"
             class="tab-pane fade in active"
             role="tabpanel"
             style="padding: 10px;">
+            <h3>Projects</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Version</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="project in meta.projects track by $index">
+                  <th scope="row" ng-bind-html="$index"></th>
+                  <td ng-bind-html="project.name"></td>
+                  <td ng-bind-html="project.version"></td>
+                  <td ng-bind-html="project.description"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div
-            id="modal-dashboard-config-json"
-            class="tab-pane fade"
+            id="modal-dashboard-config-plugins"
+            class="tab-pane fade in active"
             role="tabpanel"
             style="padding: 10px;">
-            <pre style="word-wrap: break-word; white-space: pre-wrap;">{{ map_config | json }}</pre>
+            <h3>Plugins</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Project</th>
+                  <th>Name</th>
+                  <th>Version</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="plugin in meta.plugins track by $index">
+                  <th scope="row" ng-bind-html="$index"></th>
+                  <td ng-bind-html="plugin.project"></td>
+                  <td ng-bind-html="plugin.id"></td>
+                  <td ng-bind-html="plugin.version"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            id="modal-dashboard-config-directives"
+            class="tab-pane fade in active"
+            role="tabpanel"
+            style="padding: 10px;">
+            <h3>Directives</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="directive in meta.directives track by $index">
+                  <th scope="row" ng-bind-html="$index"></th>
+                  <td ng-bind-html="directive"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            id="modal-dashboard-config-templates"
+            class="tab-pane fade in active"
+            role="tabpanel"
+            style="padding: 10px;">
+            <h3>Templates</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="template in meta.templates track by $index">
+                  <th scope="row" ng-bind-html="$index"></th>
+                  <td ng-bind-html="template"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            id="modal-dashboard-config-filters"
+            class="tab-pane fade in active"
+            role="tabpanel"
+            style="padding: 10px;">
+            <h3>Filters</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="filter in meta.filters track by $index">
+                  <th scope="row" ng-bind-html="$index"></th>
+                  <td ng-bind-html="filter"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div
             id="modal-dashboard-config-yaml"
             class="tab-pane fade"
             role="tabpanel"
             style="padding: 10px;">
-            <pre style="word-wrap: break-word; white-space: pre-wrap;">{{ map_config | yaml }}</pre>
+            <h3>Dashboard Configuration as YAML</h3>
+            <pre style="word-wrap: break-word; white-space: pre-wrap;">{{ map_config | yaml : 6 }}</pre>
+          </div>
+          <div
+            id="modal-dashboard-config-json"
+            class="tab-pane fade"
+            role="tabpanel"
+            style="padding: 10px;">
+            <h3>Dashboard Configuration as JSON</h3>
+            <pre style="word-wrap: break-word; white-space: pre-wrap;">{{ map_config | json }}</pre>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ geodash.controllers["controller_legend"] = function(
   map_config,
   live)
 {
-  angular.extend(this, $controller('GeositeControllerBase', {$element: $element, $scope: $scope}));
+  angular.extend(this, $controller('GeoDashControllerBase', {$element: $element, $scope: $scope}));
   //
   $scope.map_config = map_config;
   $scope.state = state;

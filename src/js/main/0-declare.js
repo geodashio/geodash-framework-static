@@ -257,7 +257,8 @@ geodash.listeners.toggleModal = function(event, args)
     modalOptions['show'] = false;
     var modal_scope = angular.element("#"+id).scope();
     var modal_scope_new = {
-      "state": main_scope.state
+      "state": main_scope.state,
+      "meta": geodash.meta
     };
     if("static" in args)
     {
@@ -270,11 +271,11 @@ geodash.listeners.toggleModal = function(event, args)
         {
           if(value == "map_config")
           {
-            modal_scope_new[key] = map_config;
+            modal_scope_new[key] = main_scope.map_config;
           }
           else if(value == "state")
           {
-            modal_scope_new[key] = modal_scope_new.state;
+            modal_scope_new[key] = main_scope.state;
           }
         }
         else if(angular.isArray(value))
@@ -287,11 +288,11 @@ geodash.listeners.toggleModal = function(event, args)
           {
             if(value[0] == "map_config")
             {
-              modal_scope_new[key] = extract(value.slice(1), map_config);
+              modal_scope_new[key] = extract(value.slice(1), main_scope.map_config);
             }
             else if(value[0] == "state")
             {
-              modal_scope_new[key] = extract(value.slice(1), modal_scope_new.state);
+              modal_scope_new[key] = extract(value.slice(1), main_scope.state);
             }
           }
         }

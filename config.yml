@@ -1,5 +1,7 @@
 ---
-name: "geodash.js 0.0.1"
+name: "geodash"
+version: "0.0.1"
+description: "geodash.js 0.0.1"
 path:
   geodash: "./src/geodash"
 plugins:
