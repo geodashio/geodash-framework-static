@@ -10,6 +10,7 @@ plugins:
   - welcome
   - about
   - download
+  - logo
 dependencies:
   production:
     project: []

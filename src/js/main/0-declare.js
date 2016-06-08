@@ -33,16 +33,17 @@ geodash.init.listeners = function()
     var scope = angular.element('[ng-controller='+that.data('intent-ctrl')+']').scope();
     if(that.hasClass('geodash-toggle'))
     {
+      var html5data = that.data();
+      var intentData = html5data['intent-data'];
       if(that.hasClass('geodash-off'))
       {
         that.removeClass('geodash-off');
-
-        geodash.api.intend(that.data('intent-names')[0], that.data('intent-data'), scope);
+        geodash.api.intend(that.data('intent-names')[0], intentData, scope);
       }
       else
       {
         that.addClass('geodash-off');
-        geodash.api.intend(that.data('intent-names')[1], that.data('intent-data'), scope);
+        geodash.api.intend(that.data('intent-names')[1], intentData, scope);
       }
     }
     else if(that.hasClass('geodash-radio'))
@@ -67,10 +68,158 @@ geodash.init.listeners = function()
     }
     else
     {
-      geodash.api.intend(that.data('intent-name'), that.data('intent-data'), scope);
+      geodash.api.intend(that.data('intent-name'), that.data('intentData'), scope);
     }
   });
 };
+
+geodash.init.typeahead = function($element)
+{
+  $('.typeahead', $element).each(function(){
+    var s = $(this);
+    var placeholder = s.data('placeholder');
+    var initialData = s.data('initialData');
+    var w = s.data('width');
+    var h = s.data('height');
+    var css = 'geodashserver-welcome-select-dropdown';
+    var template_empty = s.data('template-empty');
+    var template_suggestion = s.data('template-suggestion');
+
+
+    var bloodhoundData = [];
+    if(initialData == "layers")
+    {
+      bloodhoundData = [];
+      var featurelayers = angular.element("#geodash-main").scope()["map_config"]["featurelayers"];
+      if(featurelayers != undefined)
+      {
+        bloodhoundData = bloodhoundData.concat($.map(featurelayers, function(fl, id){
+          return {'id': id, 'text': id};
+        }));
+      }
+      var baselayers = angular.element("#geodash-main").scope()["map_config"]["baselayers"];
+      if(baselayers != undefined)
+      {
+        bloodhoundData = bloodhoundData.concat($.map(baselayers, function(x, i){
+          return {'id': x.id, 'text': x.id};
+        }));
+      }
+    }
+    else if(initialData == "featurelayers")
+    {
+      bloodhoundData = [];
+      var featurelayers = angular.element("#geodash-main").scope()["map_config"]["featurelayers"];
+      bloodhoundData = $.map(featurelayers, function(fl, id){ return {'id': id, 'text': id}; });
+    }
+    else
+    {
+      bloodhoundData = geodash.initial_data["data"][initialData];
+    }
+
+    bloodhoundData.sort(function(a, b){
+      var textA = a.text.toLowerCase();
+      var textB = b.text.toLowerCase();
+      if(textA < textB){ return -1; }
+      else if(textA > textB){ return 1; }
+      else { return 0; }
+    });
+
+    // Twitter Typeahead with
+    //https://github.com/bassjobsen/typeahead.js-bootstrap-css
+    var engine = new Bloodhound({
+      identify: function(obj) {
+        return obj['text'];
+      },
+      datumTokenizer: function(d) {
+        return Bloodhound.tokenizers.whitespace(d.text);
+      },
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      local: bloodhoundData
+    });
+
+    s.typeahead('destroy','NoCached');
+    s.typeahead(null, {
+      name: s.attr('name'),
+      minLength: 1,
+      limit: 10,
+      hint: false,
+      highlight: true,
+      displayKey: 'text',
+      source: engine,
+      templates: {
+        empty: template_empty,
+        suggestion: function (data) {
+            return '<p><strong>' + data.text + '</strong> - ' + data.id + '</p>';
+        },
+        footer: function (data) {
+          return '<div>Searched for <strong>' + data.query + '</strong></div>';
+        }
+      }
+    }).on('blur', function(event) {
+      var results = engine.get($(this).val());
+      var backend = $('#'+$(this).data('backend'))
+        .val(results.length == 1 ? results[0]['id'] : null)
+        .trigger('input')
+        .change();
+    })
+    .on('typeahead:change', function(event, value) {
+      console.log("Event: ", event, value);
+      var results = engine.get(value);
+      var backend = $('#'+$(this).data('backend'))
+        .val(results.length == 1 ? results[0]['id'] : null)
+        .trigger('input')
+        .change();
+    })
+    .on('typeahead:select typeahead:autocomplete typeahead:cursorchange', function(event, obj) {
+      console.log("Event: ", event, obj);
+      var backend = $('#'+$(this).data('backend'))
+        .val("id" in obj ? obj["id"] : null)
+        .trigger('input')
+        .change();
+    });
+  });
+
+}
+geodash.api.getOption = function(options, name)
+{
+  if(options != undefined && options != null)
+  {
+    return options[name];
+  }
+  else
+  {
+    return undefined;
+  }
+};
+geodash.api.getScope = function(id)
+{
+  return angular.element("#"+id).scope();
+};
+geodash.api.getDashboardConfig = function(options)
+{
+  var scope = geodash.api.getOption(options, 'scope') || geodash.api.getScope("geodash-main");
+  return scope.map_config;
+}
+geodash.api.getLayer = function(id, layers)
+{
+  var layer = undefined;
+  var matches = $.grep(layers, function(x, i){ return x.id = id; });
+  if(matches.length == 1)
+  {
+    layer = matches[0];
+  }
+  return layer;
+}
+geodash.api.getBaseLayer = function(id, options)
+{
+  var config = geodash.api.getDashboardConfig(options);
+  return geodash.api.getLayer(id, config.baselayers);
+}
+geodash.api.getFeatureLayer = function(id, options)
+{
+  var config = geodash.api.getDashboardConfig(options);
+  return geodash.api.getLayer(id, scope.map_config.featurelayers);
+}
 
 geodash.api.welcome = function(options)
 {
@@ -280,17 +429,26 @@ geodash.listeners.toggleModal = function(event, args)
         }
         else if(angular.isArray(value))
         {
-          if(value[0] == "source")
+          var value_0_lc = value[0].toLowerCase();
+          if(value_0_lc == "source")
           {
             modal_scope_new[key] = extract(value.slice(1), event.targetScope);
           }
+          else if(value_0_lc == "baselayer" || value_0_lc == "bl")
+          {
+              modal_scope_new[key] = geodash.api.getBaseLayer(value[1]) || undefined;
+          }
+          else if(value_0_lc == "featurelayer" || value_0_lc == "fl")
+          {
+              modal_scope_new[key] = geodash.api.getFeatureLayer(value[1]) || undefined;
+          }
           else
           {
-            if(value[0] == "map_config")
+            if(value_0_lc == "map_config")
             {
               modal_scope_new[key] = extract(value.slice(1), main_scope.map_config);
             }
-            else if(value[0] == "state")
+            else if(value_0_lc == "state")
             {
               modal_scope_new[key] = extract(value.slice(1), main_scope.state);
             }
@@ -343,6 +501,10 @@ geodash.listeners.toggleModal = function(event, args)
             modalElement.find('.tab-pane').slice(0, 1).addClass('in active');
             modalElement.find('.tab-pane').slice(1).removeClass('in active');
           }
+          // Initalize Tooltips
+          $('[data-toggle="tooltip"]', modalElement).tooltip();
+          //Initialize Typeahead
+          geodash.init.typeahead(modalElement);
           // Toggle Modal
           $("#"+id).modal(modalOptions);
           $("#"+id).modal('toggle');
