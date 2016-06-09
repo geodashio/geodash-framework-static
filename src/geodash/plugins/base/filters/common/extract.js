@@ -1,11 +1,18 @@
 geodash.filters["extract"] = function()
 {
-  var _extract = function(keyChain, node)
+  var _extract = function(keyChain, node, fallback)
   {
     var obj = undefined;
     if(keyChain.length==0)
     {
-      obj = node;
+      if(node != undefined && node != null)
+      {
+        obj = node;
+      }
+      else
+      {
+        obj = fallback;
+      }
     }
     else
     {
@@ -13,7 +20,7 @@ geodash.filters["extract"] = function()
       {
         var newKeyChain = keyChain.slice(1);
         var newNode = Array.isArray(node) ? node[keyChain[0]]: node[""+keyChain[0]];
-        obj = extract(newKeyChain, newNode);
+        obj = extract(newKeyChain, newNode, fallback);
       }
     }
     return obj;

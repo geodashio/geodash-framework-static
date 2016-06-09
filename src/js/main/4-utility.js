@@ -115,12 +115,19 @@ var layersAsArray = function(layers)
 {
   return $.map(layers, function(layer, id){return {'id':id, 'layer':layer};});
 };
-var extract = function(keyChain, node)
+var extract = function(keyChain, node, fallback)
 {
 	var obj = undefined;
 	if(keyChain.length==0)
 	{
-		obj = node;
+    if(node != undefined && node != null)
+		{
+      obj = node;
+    }
+    else
+    {
+      obj = fallback;
+    }
 	}
 	else
 	{
@@ -128,7 +135,7 @@ var extract = function(keyChain, node)
 		{
 			var newKeyChain = keyChain.slice(1);
 			var newNode = Array.isArray(node) ? node[keyChain[0]]: node[""+keyChain[0]];
-			obj = extract(newKeyChain, newNode);
+			obj = extract(newKeyChain, newNode, fallback);
 		}
 	}
 	return obj;
