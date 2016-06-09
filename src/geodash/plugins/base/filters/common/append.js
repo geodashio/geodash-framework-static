@@ -1,4 +1,4 @@
-geodash.filters["prepend"] = function()
+geodash.filters["append"] = function()
 {
   return function(value, arg)
   {
@@ -6,21 +6,21 @@ geodash.filters["prepend"] = function()
     {
       if(Array.isArray(arg))
       {
-        return arg.concat(value);
+        return value.concat(arg);
       }
       else
       {
-        return [arg].concat(value);
+        return value.push(arg);
       }
     }
     else if(angular.isString(value))
     {
       var arr = Array.prototype.slice.call(arguments, [1]);
-      return arr.join("") + value;
+      return value + arr.join("");
     }
     else
     {
-      return arg + value;
+      return value + arg;
     }
   };
 };

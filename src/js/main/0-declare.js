@@ -209,18 +209,17 @@ geodash.api.getLayer = function(id, layers)
     layer = matches[0];
   }
   return layer;
-}
+};
 geodash.api.getBaseLayer = function(id, options)
 {
   var config = geodash.api.getDashboardConfig(options);
   return geodash.api.getLayer(id, config.baselayers);
-}
+};
 geodash.api.getFeatureLayer = function(id, options)
 {
   var config = geodash.api.getDashboardConfig(options);
   return geodash.api.getLayer(id, scope.map_config.featurelayers);
-}
-
+};
 geodash.api.welcome = function(options)
 {
   options = options || {};
@@ -351,11 +350,16 @@ geodash.api.flatten = function(obj, prefix)
       (value === null) ||
       angular.isString(value) ||
       angular.isNumber(value) ||
-      angular.isArray(value) ||
       (typeof value == "boolean")
     )
     {
       newObject[newKey] = value;
+    }
+    else if(angular.isArray(value))
+    {
+      $.each(geodash.api.flatten(value, newKey), function(key2, value2){
+        newObject[""+key2] = value2;
+      });
     }
     else
     {
@@ -394,14 +398,30 @@ geodash.api.unpack = function(obj)
   return newObject;
 };
 
-
+geodash.listeners.switchModal = function(event, args)
+{
+  geodash.listeners.hideModal(event, args);
+  geodash.listeners.showModal(event, args)
+};
+geodash.listeners.hideModal = function(event, args)
+{
+  var id = args["id_hide"] || args["id"];
+  try {
+    $("#"+id).modal('hide');
+  }
+  catch(err){};
+};
 geodash.listeners.toggleModal = function(event, args)
+{
+  geodash.listeners.showModal(event, args);
+};
+geodash.listeners.showModal = function(event, args)
 {
     console.log('event', event);
     console.log('args', args);
     //
     var main_scope = angular.element("#geodash-main").scope();
-    var id = args["id"];
+    var id = args["id_show"] || args["id"];
     var modalOptions = args['modal'] || {};
     modalOptions['show'] = false;
     var modal_scope = angular.element("#"+id).scope();
