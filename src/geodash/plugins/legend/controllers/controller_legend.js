@@ -55,7 +55,7 @@ geodash.controllers["controller_legend"] = function(
     if("featurelayers" in $scope.map_config && $scope.map_config.featurelayers != undefined)
     {
       //var featurelayers = $.map($scope.map_config.featurelayers, function(item, key){ return {'key': key, 'item': item}; });
-      var featurelayers = $.grep(scope.map_config.featurelayers,function(x, i){ return $.inArray(x["id"], arrayFilter) != -1; });
+      var featurelayers = $.grep($scope.map_config.featurelayers,function(x, i){ return $.inArray(x["id"], arrayFilter) != -1; });
       featurelayers.sort(function(a, b){ return $.inArray(a["id"], arrayFilter) - $.inArray(b["id"], arrayFilter); });
       $scope.featurelayers = featurelayers;
     }
