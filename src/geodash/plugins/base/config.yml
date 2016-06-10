@@ -3,6 +3,7 @@ controllers:
   - controller_base.js
 directives:
   - svg.js
+  - onLinkDone.js
   - onRepeatDone.js
   - geodashModalDashboardConfig.js
 enumerations:
@@ -16,7 +17,6 @@ filters:
   - tabLabel.js
   - as_float.js
   - add.js
-  - default_if_undefined.js
   - title.js
   - as_array.js
   - sortItemsByArray.js
@@ -28,6 +28,8 @@ filters:
   - layer_is_visible.js
   - ternary.js
   - common/append.js
+  - common/default_if_undefined.js
+  - common/default_if_undefined_or_blank.js
   - common/extract.js
   - common/inArray.js
   - common/prepend.js

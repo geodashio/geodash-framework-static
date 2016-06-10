@@ -17,11 +17,28 @@ geodash.filters["extract"] = function()
     else
     {
       if(node!=undefined)
-      {
-        var newKeyChain = keyChain.slice(1);
-        var newNode = Array.isArray(node) ? node[keyChain[0]]: node[""+keyChain[0]];
-        obj = extract(newKeyChain, newNode, fallback);
-      }
+  		{
+  			var newKeyChain = keyChain.slice(1);
+        if(Array.isArray(node))
+        {
+          if(angular.isString(keyChain[0]) && keyChain[0].toLowerCase() == "length")
+          {
+            obj = node.length;
+          }
+          else if(keyChain[0] >= node.length || keyChain[0] == undefined)
+          {
+            obj = fallback;
+          }
+          else
+          {
+            obj = extract(newKeyChain, node[keyChain[0]], fallback);
+          }
+        }
+        else
+        {
+          obj = extract(newKeyChain, node[""+keyChain[0]], fallback);
+        }
+  		}
     }
     return obj;
   };

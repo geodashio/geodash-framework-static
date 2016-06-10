@@ -1,0 +1,10 @@
+<div
+  class="geodash-map-overlays"
+  ng-repeat="overlay in map_config.overlays track by $index">
+  <div
+    class="geodash-map-overlay"
+    data-overlay-index="{{ $index }}"
+    style="top: {{ overlay.top | default_if_undefined_or_blank: 'auto' }}; bottom: {{ overlay.bottom | default_if_undefined_or_blank: 'auto'}}; left: {{ overlay.left | default_if_undefined_or_blank: 'auto' }}; right: {{ overlay.right | default_if_undefined_or_blank: 'auto' }}; width: {{ overlay.width }}; height: {{ overlay.height }}; background-image: url({{ overlay.url }});"
+    on-link-done="overlayLoaded">
+  </div>
+</div>
