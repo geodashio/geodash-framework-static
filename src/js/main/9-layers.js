@@ -47,10 +47,10 @@ geodash.layers.init_featurelayer_wms = function($scope, live, map_config, id, la
     renderOrder: $.inArray(id, map_config.renderlayers),
     buffer: w.buffer || 0,
     version: w.version || "1.1.1",
-    layers: w.layers.join(","),
+    layers: (Array.isArray(w.layers) ? w.layers.join(",") : w.layers),
     styles: w.styles ? w.styles.join(",") : '',
-    format: w.format,
-    transparent: w.transparent || false,
+    format: w.format || 'image/png',
+    transparent: angular.isDefined(w.transparent) ? w.transparent : true,
     attribution: layerConfig.source.attribution
   });
   live["featurelayers"][id] = fl;

@@ -1,23 +1,27 @@
-<div
-  class="geodash-map-overlays"
-  ng-repeat="overlay in map_config.overlays track by $index">
-  <div
-    ng-if="overlay.type == 'text'"
-    class="geodash-map-overlay"
-    data-overlay-index="{{ $index }}"
-    height="{{ overlay.height | default_if_undefined : initial }}"
-    width="{{ overlay.width | default_if_undefined : initial }}"
-    style="padding: {{ overlay.padding | default_if_undefined: '0' }}; background: {{ overlay.background | default_if_undefined: 'transparent' }}; top: {{ overlay.position.top | default_if_undefined_or_blank: 'auto' }}; bottom: {{ overlay.position.bottom | default_if_undefined_or_blank: 'auto'}}; left: {{ overlay.position.left | default_if_undefined_or_blank: 'auto' }}; right: {{ overlay.position.right | default_if_undefined_or_blank: 'auto' }}; width: {{ overlay.width | default_if_undefined : initial }}; height: {{ overlay.height | default_if_undefined : initial }}; font-family: {{ overlay.text.font.family | default_if_undefined : 'Arial'}}; font-size: {{ overlay.text.font.size | default_if_undefined : '12px'}};  font-style: {{ overlay.text.font.style | default_if_undefined : 'normal'}};"
-    ng-bind-html="overlay.text.content | md2html"
-    on-link-done="overlayLoaded">
+<div class="geodash-map-overlays">
+  <div ng-repeat="overlay in map_config.overlays track by $index">
+    <div
+      ng-if="overlay.type == 'text'"
+      data-overlay-index="{{ $index }}"
+      data-overlay-type="text"
+      class="geodash-map-overlay"
+      height="{{ overlay.height | default_if_undefined : initial }}"
+      width="{{ overlay.width | default_if_undefined : initial }}"
+      style="{{ style(overlay.type, overlay) }}"
+      ng-bind-html="overlay.text.content | md2html"
+      on-link-done="overlayLoaded">
+    </div>
+    <div
+      ng-if="overlay.type == 'image'"
+      data-overlay-index="{{ $index }}"
+      data-overlay-type="image"
+      class="geodash-map-overlay"
+      style="display: inline-block; {{ style(overlay.type, overlay) }}"
+      on-link-done="overlayLoaded">
+      <img
+        ng-src="{{ overlay.image.url }}"
+        width="{{ overlay.width }}"
+        height="{{ overlay.height }}">
+    </div>
   </div>
-  <img
-    ng-if="overlay.type == 'image'"
-    class="geodash-map-overlay"
-    data-overlay-index="{{ $index }}"
-    ng-src="{{ overlay.image.url }}"
-    height="{{ overlay.height }}"
-    width="{{ overlay.width }}"
-    style="padding: {{ overlay.padding | default_if_undefined: '0' }}; background: {{ overlay.background | default_if_undefined: 'transparent' }}; top: {{ overlay.position.top | default_if_undefined_or_blank: 'auto' }}; bottom: {{ overlay.position.bottom | default_if_undefined_or_blank: 'auto'}}; left: {{ overlay.position.left | default_if_undefined_or_blank: 'auto' }}; right: {{ overlay.position.right | default_if_undefined_or_blank: 'auto' }}; width: {{ overlay.width | default_if_undefined : initial }}; height: {{ overlay.height | default_if_undefined : initial }};"
-    on-link-done="overlayLoaded">
 </div>

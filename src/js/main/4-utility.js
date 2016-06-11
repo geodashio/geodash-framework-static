@@ -141,6 +141,10 @@ var expand = function(x)
 };
 var extract = function(keyChain, node, fallback)
 {
+  if(angular.isString(keyChain))
+  {
+    keyChain = keyChain.split(".");
+  }
 	var obj = undefined;
 	if(keyChain.length==0)
 	{
