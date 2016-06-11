@@ -93,8 +93,8 @@ geodash.init.typeahead = function($element)
       var featurelayers = angular.element("#geodash-main").scope()["map_config"]["featurelayers"];
       if(featurelayers != undefined)
       {
-        bloodhoundData = bloodhoundData.concat($.map(featurelayers, function(fl, id){
-          return {'id': id, 'text': id};
+        bloodhoundData = bloodhoundData.concat($.map(featurelayers, function(x, i){
+          return {'id': x.id, 'text': x.id};
         }));
       }
       var baselayers = angular.element("#geodash-main").scope()["map_config"]["baselayers"];
