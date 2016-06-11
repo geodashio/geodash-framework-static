@@ -6,6 +6,10 @@ geodash.directives["geodashMapOverlays"] = function(){
     templateUrl: 'map_overlays.tpl.html',
     link: function ($scope, element, attrs){
 
+      $scope.styles = function(){
+
+      };
+
       $(element).on('mouseenter', '.geodash-map-overlay', function(event, args){
         $(this).draggable('enable');
       });

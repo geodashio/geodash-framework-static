@@ -115,6 +115,30 @@ var layersAsArray = function(layers)
 {
   return $.map(layers, function(layer, id){return {'id':id, 'layer':layer};});
 };
+var expand = function(x)
+{
+  var newArray = [];
+  if(Array.isArray(x))
+  {
+    for(var i = 0; i < x.length; i++)
+    {
+      var value = x[i];
+      if(value.indexOf(".") != -1)
+      {
+        newArray = newArray.concat(value.split("."));
+      }
+      else
+      {
+        newArray.push(value);
+      }
+    }
+  }
+  else if(angular.isString(x))
+  {
+    newArray = x.split(".");
+  }
+  return newArray;
+};
 var extract = function(keyChain, node, fallback)
 {
 	var obj = undefined;
@@ -131,29 +155,37 @@ var extract = function(keyChain, node, fallback)
 	}
 	else
 	{
-		if(node!=undefined)
-		{
-			var newKeyChain = keyChain.slice(1);
-      if(Array.isArray(node))
+    var newKeyChain = keyChain.slice(1);
+    if(newKeyChain.length == 0)
+    {
+      if(angular.isString(keyChain[0]) && keyChain[0].toLowerCase() == "length")
       {
-        if(angular.isString(keyChain[0]) && keyChain[0].toLowerCase() == "length")
+        if(Array.isArray(node))
         {
           obj = node.length;
         }
-        else if(keyChain[0] >= node.length || keyChain[0] == undefined)
+        else if(angular.isDefined(node))
         {
-          obj = fallback;
+          obj = node["length"];
         }
         else
         {
-          obj = extract(newKeyChain, node[keyChain[0]], fallback);
+          obj = 0;
         }
+      }
+    }
+
+    if(obj == undefined && angular.isDefined(node))
+    {
+      if(Array.isArray(node))
+      {
+        obj = extract(newKeyChain, node[keyChain[0]], fallback);
       }
       else
       {
         obj = extract(newKeyChain, node[""+keyChain[0]], fallback);
       }
-		}
+    }
 	}
 	return obj;
 };

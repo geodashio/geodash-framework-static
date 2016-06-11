@@ -1,8 +1,0 @@
----
-controllers: []
-directives:
-  - geodashMapLogo.js
-templates:
-  - map_logo.tpl.html
-less:
-  - map_logo.less

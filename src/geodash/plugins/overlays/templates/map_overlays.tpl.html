@@ -2,9 +2,22 @@
   class="geodash-map-overlays"
   ng-repeat="overlay in map_config.overlays track by $index">
   <div
+    ng-if="overlay.type == 'text'"
     class="geodash-map-overlay"
     data-overlay-index="{{ $index }}"
-    style="top: {{ overlay.top | default_if_undefined_or_blank: 'auto' }}; bottom: {{ overlay.bottom | default_if_undefined_or_blank: 'auto'}}; left: {{ overlay.left | default_if_undefined_or_blank: 'auto' }}; right: {{ overlay.right | default_if_undefined_or_blank: 'auto' }}; width: {{ overlay.width }}; height: {{ overlay.height }}; background-image: url({{ overlay.url }});"
+    height="{{ overlay.height | default_if_undefined : initial }}"
+    width="{{ overlay.width | default_if_undefined : initial }}"
+    style="padding: {{ overlay.padding | default_if_undefined: '0' }}; background: {{ overlay.background | default_if_undefined: 'transparent' }}; top: {{ overlay.position.top | default_if_undefined_or_blank: 'auto' }}; bottom: {{ overlay.position.bottom | default_if_undefined_or_blank: 'auto'}}; left: {{ overlay.position.left | default_if_undefined_or_blank: 'auto' }}; right: {{ overlay.position.right | default_if_undefined_or_blank: 'auto' }}; width: {{ overlay.width | default_if_undefined : initial }}; height: {{ overlay.height | default_if_undefined : initial }}; font-family: {{ overlay.text.font.family | default_if_undefined : 'Arial'}}; font-size: {{ overlay.text.font.size | default_if_undefined : '12px'}};  font-style: {{ overlay.text.font.style | default_if_undefined : 'normal'}};"
+    ng-bind-html="overlay.text.content | md2html"
     on-link-done="overlayLoaded">
   </div>
+  <img
+    ng-if="overlay.type == 'image'"
+    class="geodash-map-overlay"
+    data-overlay-index="{{ $index }}"
+    ng-src="{{ overlay.image.url }}"
+    height="{{ overlay.height }}"
+    width="{{ overlay.width }}"
+    style="padding: {{ overlay.padding | default_if_undefined: '0' }}; background: {{ overlay.background | default_if_undefined: 'transparent' }}; top: {{ overlay.position.top | default_if_undefined_or_blank: 'auto' }}; bottom: {{ overlay.position.bottom | default_if_undefined_or_blank: 'auto'}}; left: {{ overlay.position.left | default_if_undefined_or_blank: 'auto' }}; right: {{ overlay.position.right | default_if_undefined_or_blank: 'auto' }}; width: {{ overlay.width | default_if_undefined : initial }}; height: {{ overlay.height | default_if_undefined : initial }};"
+    on-link-done="overlayLoaded">
 </div>

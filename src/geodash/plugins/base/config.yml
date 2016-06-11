@@ -6,10 +6,18 @@ directives:
   - onLinkDone.js
   - onRepeatDone.js
   - geodashModalDashboardConfig.js
+  - tab.js
+  - geodashBtnClose.js
+  - geodashBtnInfo.js
+  - geodashBtnClear.js
 enumerations:
   - dates.js
 templates:
   - geodash_modal_dashboard_config.tpl.html
+  - geodash_tab.tpl.html
+  - geodash_btn_close.tpl.html
+  - geodash_btn_info.tpl.html
+  - geodash_btn_clear.tpl.html
 filters:
   - default.js
   - md2html.js
@@ -33,7 +41,7 @@ filters:
   - common/extract.js
   - common/inArray.js
   - common/prepend.js
-  - common/replace.js
+  - common/ternary_defined.js
   - common/yaml.js
   - array/join.js
   - array/first.js
@@ -43,7 +51,9 @@ filters:
   - format/formatFloat.js
   - format/formatInteger.js
   - format/formatArray.js
-  - format/formatMonth.js
+  - format/formatMonth.js m
+  - math/gte.js
+  - string/replace.js
   - string/split.js
   - url/url_shapefile.js
   - url/url_geojson.js

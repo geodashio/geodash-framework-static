@@ -1,69 +1,20 @@
 <div class="modal-dialog geodash-responsive" role="document">
   <div class="modal-content">
     <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+      <button geodash-btn-close></button>
       <h4 class="modal-title" id="myModalLabel">Configuration / {{ map_config.title }}</h4>
     </div>
     <div class="modal-body">
       <div>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active">
-            <a
-              href="#modal-dashboard-config-projects"
-              aria-controls="modal-dashboard-config-projects"
-              role="tab"
-              data-toggle="tab"
-              style="padding-left:8px; padding-right: 8px;">Projects</a>
-          </li>
-          <li role="presentation" class="">
-            <a
-              href="#modal-dashboard-config-plugins"
-              aria-controls="modal-dashboard-config-plugins"
-              role="tab"
-              data-toggle="tab"
-              style="padding-left:8px; padding-right: 8px;">Plugins</a>
-          </li>
-          <li role="presentation" class="">
-            <a
-              href="#modal-dashboard-config-directives"
-              aria-controls="modal-dashboard-config-directives"
-              role="tab"
-              data-toggle="tab"
-              style="padding-left:8px; padding-right: 8px;">Directives</a>
-          </li>
-          <li role="presentation" class="">
-            <a
-              href="#modal-dashboard-config-templates"
-              aria-controls="modal-dashboard-config-templates"
-              role="tab"
-              data-toggle="tab"
-              style="padding-left:8px; padding-right: 8px;">Templates</a>
-          </li>
-          <li role="presentation" class="">
-            <a
-              href="#modal-dashboard-config-filters"
-              aria-controls="modal-dashboard-config-filters"
-              role="tab"
-              data-toggle="tab"
-              style="padding-left:8px; padding-right: 8px;">Filters</a>
-          </li>
-          <li role="presentation" class="">
-            <a
-              href="#modal-dashboard-config-yaml"
-              aria-controls="modal-dashboard-config-yaml"
-              role="tab"
-              data-toggle="tab"
-              style="padding-left:8px; padding-right: 8px;">YAML</a>
-          </li>
-          <li role="presentation" class="">
-            <a
-              href="#modal-dashboard-config-json"
-              aria-controls="modal-dashboard-config-json"
-              role="tab"
-              data-toggle="tab"
-              style="padding-left:8px; padding-right: 8px;">JSON</a>
-          </li>
+          <li label="Projects" target="#modal-dashboard-config-projects" active="true" geodash-tab></li>
+          <li label="Plugins" target="#modal-dashboard-config-plugins" geodash-tab></li>
+          <li label="Directives" target="#modal-dashboard-config-directives" geodash-tab></li>
+          <li label="Templates" target="#modal-dashboard-config-templates" geodash-tab></li>
+          <li label="Filters" target="#modal-dashboard-config-filters" geodash-tab></li>
+          <li label="YAML" target="#modal-dashboard-config-yaml" geodash-tab></li>
+          <li label="JSON" target="#modal-dashboard-config-json" geodash-tab></li>
         </ul>
         <div class="tab-content">
           <div

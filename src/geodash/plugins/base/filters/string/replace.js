@@ -6,7 +6,14 @@ geodash.filters["replace"] = function()
       {
         if(angular.isString(oldSubstring) && angular.isString(newSubstring))
         {
-          return value.replace(oldSubstring, newSubstring);
+          if(oldSubstring == ".")
+          {
+            return value.replace(new RegExp('[.]', 'g'), newSubstring);
+          }
+          else
+          {
+            return value.replace(oldSubstring, newSubstring);
+          }
         }
         else
         {
