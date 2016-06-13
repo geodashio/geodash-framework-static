@@ -17,6 +17,7 @@ geodash.directives["geodashMapOverlays"] = function(){
           "right": extract("position.right", overlay, 'auto'),
           "padding": extract("padding", overlay, '0'),
           "background": extract("background", overlay, 'transparent'),
+          "opacity": extract("opacity", overlay, '1.0'),
           "width": extract("width", overlay, 'initial'),
           "height": extract("height", overlay, 'initial')
         });
@@ -26,7 +27,8 @@ geodash.directives["geodashMapOverlays"] = function(){
           $.extend(styleMap, {
             "font-family": extract("text.font.family", overlay, 'Arial'),
             "font-size": extract("text.font.size", overlay, '12px'),
-            "font-style": extract("text.font.style", overlay, 'normal')
+            "font-style": extract("text.font.style", overlay, 'normal'),
+            "text-shadow": extract("text.shadow", overlay, 'none')
           });
         }
         else if(type == "image")

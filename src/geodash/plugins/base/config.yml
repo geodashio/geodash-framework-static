@@ -34,13 +34,13 @@ filters:
   - width_x.js
   - length.js
   - layer_is_visible.js
-  - ternary.js
   - common/append.js
   - common/default_if_undefined.js
   - common/default_if_undefined_or_blank.js
   - common/extract.js
   - common/inArray.js
   - common/prepend.js
+  - common/ternary.js
   - common/ternary_defined.js
   - common/yaml.js
   - array/join.js
