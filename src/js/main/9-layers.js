@@ -122,7 +122,7 @@ geodash.layers.init_featurelayer = function(id, layerConfig, $scope, live, map_c
 };
 geodash.layers.init_featurelayers = function(featureLayers, $scope, live, map_config)
 {
-  $.each(featureLayers, function(id, layerConfig){
-    geodash.layers.init_featurelayer(id, layerConfig, $scope, live, map_config);
+  $.each(featureLayers, function(i, layerConfig){
+    geodash.layers.init_featurelayer(layerConfig.id, layerConfig, $scope, live, map_config);
   });
 };

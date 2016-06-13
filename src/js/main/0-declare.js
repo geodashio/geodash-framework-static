@@ -12,7 +12,13 @@ var geodash = {
 geodash.init.listeners = function()
 {
   $('body').on('click', '.btn-clear', function(event) {
-    var selector = $(this).data('clear');
+
+    // this doesn't always point to what you think it does,
+    // that's why need to use event.currentTarget
+    var selector = $(event.currentTarget).attr('data-clear');
+
+    try{ $(selector).typeahead('close'); }catch(err){};
+
     $(selector).each(function(){
       var input = $(this);
       input.val(null);
@@ -34,7 +40,7 @@ geodash.init.listeners = function()
     if(that.hasClass('geodash-toggle'))
     {
       var html5data = that.data();
-      var intentData = html5data['intent-data'];
+      var intentData = html5data['intentData'];
       if(that.hasClass('geodash-off'))
       {
         that.removeClass('geodash-off');
@@ -137,15 +143,22 @@ geodash.init.typeahead = function($element)
       local: bloodhoundData
     });
 
+    s.data('engine', engine);
     s.typeahead('destroy','NoCached');
     s.typeahead(null, {
       name: s.attr('name'),
-      minLength: 1,
+      minLength: 0,
       limit: 10,
       hint: false,
       highlight: true,
       displayKey: 'text',
-      source: engine,
+      source: function (query, cb)
+      {
+        // https://github.com/twitter/typeahead.js/pull/719#issuecomment-43083651
+        // http://pastebin.com/adWHFupF
+        //query == "" ? cb(data) : engine.ttAdapter()(query, cb);
+        engine.ttAdapter()(query, cb);
+      },
       templates: {
         empty: template_empty,
         suggestion: function (data) {
@@ -173,7 +186,7 @@ geodash.init.typeahead = function($element)
     .on('typeahead:select typeahead:autocomplete typeahead:cursorchange', function(event, obj) {
       console.log("Event: ", event, obj);
       var backend = $('#'+$(this).data('backend'))
-        .val("id" in obj ? obj["id"] : null)
+        .val(extract("id", obj, null))
         .trigger('input')
         .change();
     });

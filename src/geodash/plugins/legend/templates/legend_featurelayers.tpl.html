@@ -26,7 +26,7 @@
       </div><!--
       --><div class="geodash-map-legend-item-icon geodash-map-legend-item-visibility">
          <a
-           ng-class="(layer.visible != undefined ? layer.visible : true ) ? 'geodash-map-legend-item-visibility-button geodash-intent geodash-toggle' : 'geodash-map-legend-item-visibility-button geodash-intent geodash-toggle geodash-off'"
+           ng-class="layer.id | inArray : state.view.featurelayers | ternary : 'geodash-map-legend-item-visibility-button geodash-intent geodash-toggle' : 'geodash-map-legend-item-visibility-button geodash-intent geodash-toggle geodash-off'"
            data-intent-names="[&quot;showLayer&quot;,&quot;hideLayer&quot;]"
            data-intent-data="{&quot;layer&quot;:&quot;{{ layer.id }}&quot;}"
            data-intent-ctrl="geodash-map-legend">
@@ -102,7 +102,7 @@
       </div><!--
       --><div
            class="geodash-map-legend-item-label"
-           style="{{ layer.id | layer_is_visible : state | ternary : '' : 'opacity: 0.4;' }}">
+           style="{{ layer.id | inArray : state.view.featurelayers | ternary : '' : 'opacity: 0.4;' }}">
         <span ng-bind-html="layer.legend.label | md2html"></span>
       </div>
     </div>

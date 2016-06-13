@@ -17,7 +17,7 @@
       </div><!--
       --><div class="geodash-map-legend-item-icon geodash-map-legend-item-visibility">
            <a
-             ng-class=" $first ? 'geodash-map-legend-item-visibility-button geodash-intent geodash-radio geodash-on' : 'geodash-map-legend-item-visibility-button geodash-intent geodash-radio'"
+             ng-class=" layer.id == state.view.baselayer ? 'geodash-map-legend-item-visibility-button geodash-intent geodash-radio geodash-on' : 'geodash-map-legend-item-visibility-button geodash-intent geodash-radio'"
              data-intent-name="switchBaseLayer"
              data-intent-data="{&quot;layer&quot;:&quot;{{ layer.id }}&quot;}"
              data-intent-class-on="geodash-on"
@@ -31,7 +31,7 @@
     --><div class="geodash-map-legend-item-right">
       <div
         class="geodash-map-legend-item-label"
-        style="{{ layer.id | layer_is_visible : state | ternary : 'width: 100%;' : 'width: 100%;opacity: 0.4;' }}">
+        style="{{ layer.id == state.view.baselayer ? 'width: 100%;' : 'width: 100%;opacity: 0.4;' }}">
         <span ng-bind-html="layer.legend.label | md2html"></span>
       </div>
     </div>
