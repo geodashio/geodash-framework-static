@@ -460,7 +460,7 @@ geodash.listeners.showModal = function(event, args)
     var id = args["id_show"] || args["id"];
     var modalOptions = args['modal'] || {};
     modalOptions['show'] = false;
-    var modal_scope = angular.element("#"+id).scope();
+    var modal_scope = angular.element("#"+id).isolateScope() || angular.element("#"+id).scope();
     var modal_scope_new = {
       "state": main_scope.state,
       "meta": geodash.meta
