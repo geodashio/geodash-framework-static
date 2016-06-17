@@ -36,7 +36,8 @@ geodash.init.listeners = function()
   $('body').on('click', '.geodash-intent', function(event) {
     event.preventDefault();  // For anchor tags
     var that = $(this);
-    var scope = angular.element('[ng-controller='+that.data('intent-ctrl')+']').scope();
+    //var scope = angular.element('[ng-controller='+that.data('intent-ctrl')+']').scope();
+    var scope = geodash.api.getScope(that.data('intent-ctrl'));
     if(that.hasClass('geodash-toggle'))
     {
       var html5data = that.data();
@@ -217,7 +218,7 @@ geodash.api.getOption = function(options, name)
 };
 geodash.api.getScope = function(id)
 {
-  return angular.element("#"+id).scope();
+  return angular.element("#"+id).isolateScope() || angular.element("#"+id).scope();
 };
 geodash.api.getDashboardConfig = function(options)
 {
@@ -424,6 +425,87 @@ geodash.api.unpack = function(obj)
   return newObject;
 };
 
+geodash.api.buildScope = function(event, args)
+{
+  var mainScope = geodash.api.getScope("geodash-main");
+  //
+  var id = args["id_target"] || args["id_show"] || args["id"];
+  var sourceScope = event.targetScope;
+  var scope_new = {
+    "state": mainScope.state,
+    "meta": geodash.meta
+  };
+  if(angular.isDefined(args))
+  {
+    if("static" in args)
+    {
+      scope_new = $.extend(scope_new, args["static"]);
+    }
+    if("dynamic" in args)
+    {
+      $.each(args["dynamic"],function(key, value){
+        if(angular.isString(value))
+        {
+          if(value == "map_config")
+          {
+            scope_new[key] = mainScope.map_config;
+          }
+          else if(value == "state")
+          {
+            scope_new[key] = mainScope.state;
+          }
+        }
+        else if(angular.isArray(value))
+        {
+          var value_0_lc = value[0].toLowerCase();
+          if(value_0_lc == "source")
+          {
+            scope_new[key] = extract(expand(value.slice(1)), event.targetScope);
+          }
+          else if(value_0_lc == "baselayer" || value_0_lc == "bl")
+          {
+              scope_new[key] = geodash.api.getBaseLayer(value[1]) || undefined;
+          }
+          else if(value_0_lc == "featurelayer" || value_0_lc == "fl")
+          {
+              scope_new[key] = geodash.api.getFeatureLayer(value[1]) || undefined;
+          }
+          else
+          {
+            if(value_0_lc == "map_config")
+            {
+              scope_new[key] = extract(expand(value.slice(1)), mainScope.map_config);
+            }
+            else if(value_0_lc == "state")
+            {
+              scope_new[key] = extract(expand(value.slice(1)), mainScope.state);
+            }
+          }
+        }
+        else
+        {
+          scope_new[key] = value;
+        }
+      });
+    }
+  }
+  return scope_new;
+};
+
+geodash.listeners.saveAndHide = function(event, args)
+{
+  geodash.listeners.hideModal(event, args);
+  //
+  var target = args["id_target"] || args["id"];
+  var modal_scope_target = geodash.api.getScope(target);
+  var modal_scope_new = geodash.api.buildScope(event, args);
+  modal_scope_target.$apply(function () {
+    $.each(modal_scope_new, function(key, value){
+      modal_scope_target[key] = value;
+    });
+    //$.extend(modal_scope_target, modal_scope_new);
+  });
+};
 geodash.listeners.switchModal = function(event, args)
 {
   geodash.listeners.hideModal(event, args);
@@ -434,7 +516,7 @@ geodash.listeners.hideModal = function(event, args)
   var id = args["id_hide"] || args["id"];
   try {
     $("#"+id).modal('hide');
-    var modal_scope = angular.element("#"+id).scope();
+    var modal_scope = geodash.api.getScope(id);
     var aClear = args["clear"];
     if("clear" in args && args["clear"] != undefined)
     {
@@ -456,66 +538,11 @@ geodash.listeners.showModal = function(event, args)
     console.log('event', event);
     console.log('args', args);
     //
-    var main_scope = angular.element("#geodash-main").scope();
     var id = args["id_show"] || args["id"];
+    var modal_scope = geodash.api.getScope(id);
+    var modal_scope_new = geodash.api.buildScope(event, args);
     var modalOptions = args['modal'] || {};
     modalOptions['show'] = false;
-    var modal_scope = angular.element("#"+id).isolateScope() || angular.element("#"+id).scope();
-    var modal_scope_new = {
-      "state": main_scope.state,
-      "meta": geodash.meta
-    };
-    if("static" in args)
-    {
-      modal_scope_new = $.extend(modal_scope_new, args["static"]);
-    }
-    if("dynamic" in args)
-    {
-      $.each(args["dynamic"],function(key, value){
-        if(angular.isString(value))
-        {
-          if(value == "map_config")
-          {
-            modal_scope_new[key] = main_scope.map_config;
-          }
-          else if(value == "state")
-          {
-            modal_scope_new[key] = main_scope.state;
-          }
-        }
-        else if(angular.isArray(value))
-        {
-          var value_0_lc = value[0].toLowerCase();
-          if(value_0_lc == "source")
-          {
-            modal_scope_new[key] = extract(value.slice(1), event.targetScope);
-          }
-          else if(value_0_lc == "baselayer" || value_0_lc == "bl")
-          {
-              modal_scope_new[key] = geodash.api.getBaseLayer(value[1]) || undefined;
-          }
-          else if(value_0_lc == "featurelayer" || value_0_lc == "fl")
-          {
-              modal_scope_new[key] = geodash.api.getFeatureLayer(value[1]) || undefined;
-          }
-          else
-          {
-            if(value_0_lc == "map_config")
-            {
-              modal_scope_new[key] = extract(value.slice(1), main_scope.map_config);
-            }
-            else if(value_0_lc == "state")
-            {
-              modal_scope_new[key] = extract(value.slice(1), main_scope.state);
-            }
-          }
-        }
-        else
-        {
-          modal_scope_new[key] = value;
-        }
-      });
-    }
     modal_scope.$apply(function () {
         // Update Scope
         modal_scope = $.extend(modal_scope, modal_scope_new);
