@@ -123,9 +123,16 @@ var expand = function(x)
     for(var i = 0; i < x.length; i++)
     {
       var value = x[i];
-      if(value.indexOf(".") != -1)
+      if(angular.isString(value))
       {
-        newArray = newArray.concat(value.split("."));
+        if(value.indexOf(".") != -1)
+        {
+          newArray = newArray.concat(value.split("."));
+        }
+        else
+        {
+          newArray.push(value);
+        }
       }
       else
       {

@@ -489,8 +489,50 @@ geodash.api.buildScope = function(event, args)
       });
     }
   }
-  return scope_new;
+  return $.extend(true, {}, scope_new);  // Returns a deep copy of variables
 };
+
+geodash.api.updateValue = function(field_flat, source, target)
+{
+  // Update map_config
+  if(field_flat.indexOf("__") == -1)
+  {
+    target[field_flat] = source[field_flat];
+  }
+  else
+  {
+    var keyChain = field_flat.split("__");
+    for(var j = 0; j < keyChain.length -1 ; j++)
+    {
+      var newKey = keyChain[j];
+      if(!(newKey in target))
+      {
+        var iTest = -1;
+        try{iTest = parseInt(keyChain[j+1], 10);}catch(err){iTest = -1;};
+        target[newKey] = iTest >= 0 ? [] : {};
+      }
+      target = target[newKey];
+    }
+    var finalKey = keyChain[keyChain.length-1];
+    if(angular.isArray(target))
+    {
+      if(finalKey >= target.length)
+      {
+        var zeros = finalKey - target.length;
+        for(var k = 0; k < zeros; k++ )
+        {
+          target.push({});
+        }
+        target.push(source[field_flat]);
+      }
+    }
+    else
+    {
+      target[finalKey] = source[field_flat];
+    }
+  }
+};
+
 
 geodash.listeners.saveAndHide = function(event, args)
 {
@@ -503,13 +545,26 @@ geodash.listeners.saveAndHide = function(event, args)
     $.each(modal_scope_new, function(key, value){
       modal_scope_target[key] = value;
     });
+    // OR
     //$.extend(modal_scope_target, modal_scope_new);
   });
 };
+/*
+geodash.listeners.saveAndSwitch = function(event, args)
+{
+  geodash.listeners.hideModal(event, args);
+  //
+  var target = args["id_show"] || args["id"];
+  var modal_scope_target = geodash.api.getScope(target);
+  var modal_scope_new = geodash.api.buildScope(event, args);
+  modal_scope_target.$apply(function () {
+    $.each(modal_scope_new, function(key, value){ modal_scope_target[key] = value; });
+  });
+};*/
 geodash.listeners.switchModal = function(event, args)
 {
   geodash.listeners.hideModal(event, args);
-  geodash.listeners.showModal(event, args)
+  geodash.listeners.showModal(event, args);
 };
 geodash.listeners.hideModal = function(event, args)
 {
@@ -545,7 +600,8 @@ geodash.listeners.showModal = function(event, args)
     modalOptions['show'] = false;
     modal_scope.$apply(function () {
         // Update Scope
-        modal_scope = $.extend(modal_scope, modal_scope_new);
+        //modal_scope = $.extend(modal_scope, modal_scope_new);
+        $.each(modal_scope_new, function(key, value){ modal_scope[key] = value; });
         setTimeout(function(){
           // Update Modal Tab Selection
           // See https://github.com/angular-ui/bootstrap/issues/1741
