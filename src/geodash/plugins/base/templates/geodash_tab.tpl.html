@@ -1,6 +1,6 @@
 <li
   role="presentation"
-  ng-class="active ? 'active' : ''">
+  ng-class="(active && active != 'false') ? 'active' : ''">
   <a
     href="#{{ target }}"
     aria-controls="{{ target }}"

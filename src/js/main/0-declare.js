@@ -73,20 +73,19 @@ geodash.init.listeners = function()
     event.preventDefault();  // For anchor tags
     var that = $(this);
     //var scope = angular.element('[ng-controller='+that.data('intent-ctrl')+']').scope();
-    var scope = geodash.api.getScope(that.data('intent-ctrl'));
+    var scope = geodash.api.getScope(that.attr('data-intent-ctrl'));
     if(that.hasClass('geodash-toggle'))
     {
-      var html5data = that.data();
-      var intentData = html5data['intentData'];
+      var intentData = JSON.parse(that.attr('data-intent-data')); // b/c jquery data not updated by angular
       if(that.hasClass('geodash-off'))
       {
         that.removeClass('geodash-off');
-        geodash.api.intend(that.data('intent-names')[0], intentData, scope);
+        geodash.api.intend(that.attr('data-intent-names')[0], intentData, scope);
       }
       else
       {
         that.addClass('geodash-off');
-        geodash.api.intend(that.data('intent-names')[1], intentData, scope);
+        geodash.api.intend(that.attr('data-intent-names')[1], intentData, scope);
       }
     }
     else if(that.hasClass('geodash-radio'))
@@ -106,12 +105,14 @@ geodash.init.listeners = function()
           that.removeClass(that.data("intent-class-off"));
           siblings.addClass(that.data("intent-class-off"));
         }
-        geodash.api.intend(that.data('intent-name'), that.data('intent-data'), scope);
+        var intentData = JSON.parse(that.attr('data-intent-data')); // b/c jquery data not updated by angular
+        geodash.api.intend(that.attr('data-intent-name'), intentData, scope);
       }
     }
     else
     {
-      geodash.api.intend(that.data('intent-name'), that.data('intentData'), scope);
+      var intentData = JSON.parse(that.attr('data-intent-data'));
+      geodash.api.intend(that.attr('data-intent-name'), intentData, scope);
     }
   });
 };
