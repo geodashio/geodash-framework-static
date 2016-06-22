@@ -6,7 +6,43 @@ var geodash = {
   'vecmath': {},
   'tilemath': {},
   'api': {},
-  'listeners': {}
+  'listeners': {},
+  'ui': {}
+};
+
+geodash.init.templates = function(app)
+{
+  if(geodash.templates != undefined)
+  {
+    geodash.meta.templates = [];
+    $.each(geodash.templates, function(name, template){
+      geodash.meta.templates.push(name);
+      app.run(function($templateCache){$templateCache.put(name,template);});
+    });
+  }
+};
+
+geodash.init.filters = function(app)
+{
+  if(geodash.filters != undefined)
+  {
+    geodash.meta.filters = [];
+    $.each(geodash.filters, function(name, func){
+      geodash.meta.filters.push(name);
+      app.filter(name, func);
+    });
+  }
+};
+geodash.init.directives = function(app)
+{
+  if(geodash.directives != undefined)
+  {
+    geodash.meta.directives = [];
+    $.each(geodash.directives, function(name, dir){
+      geodash.meta.directives.push(name);
+      app.directive(name, dir);
+    });
+  }
 };
 
 geodash.init.listeners = function()
@@ -227,10 +263,16 @@ geodash.api.getDashboardConfig = function(options)
     geodash.api.getScope("geodash-main");
   return scope.map_config;
 }
+geodash.api.hasLayer = function(id, layers)
+{
+  var layer = undefined;
+  var matches = $.grep(layers, function(x, i){ return x.id == id; });
+  return matches.length == 1;
+};
 geodash.api.getLayer = function(id, layers)
 {
   var layer = undefined;
-  var matches = $.grep(layers, function(x, i){ return x.id = id; });
+  var matches = $.grep(layers, function(x, i){ return x.id == id; });
   if(matches.length == 1)
   {
     layer = matches[0];
@@ -242,10 +284,20 @@ geodash.api.getBaseLayer = function(id, options)
   var config = geodash.api.getDashboardConfig(options);
   return geodash.api.getLayer(id, config.baselayers);
 };
+geodash.api.hasBaseLayer = function(id, options)
+{
+  var config = geodash.api.getDashboardConfig(options);
+  return geodash.api.hasLayer(id, config.baselayers);
+};
 geodash.api.getFeatureLayer = function(id, options)
 {
   var config = geodash.api.getDashboardConfig(options);
   return geodash.api.getLayer(id, config.featurelayers);
+};
+geodash.api.hasFeatureLayer = function(id, options)
+{
+  var config = geodash.api.getDashboardConfig(options);
+  return geodash.api.hasLayer(id, config.featurelayers);
 };
 geodash.api.welcome = function(options)
 {
@@ -649,4 +701,15 @@ geodash.listeners.showModal = function(event, args)
           $("#"+id).modal('toggle');
         },0);
     });
+};
+
+geodash.ui.showOptions = function($event, selector)
+{
+  try{
+    var input = $(selector);
+    input.typeahead('open');
+    input.data('ttTypeahead').menu.update.apply(input.data('ttTypeahead').menu, [""]);
+    var engine = input.data('engine');
+    engine.search.apply(engine, [""])
+  }catch(err){};
 };

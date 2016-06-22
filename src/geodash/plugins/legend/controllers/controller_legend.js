@@ -75,10 +75,12 @@ geodash.controllers["controller_legend"] = function(
   $scope.$on("refreshMap", function(event, args){
     console.log('args: ', args);
 
+    $scope.state = args.state;
+    /*
     $scope.$apply(function()
     {
       $scope.state = args.state;
-    });
+    });*/
 
   });
 };

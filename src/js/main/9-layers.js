@@ -58,7 +58,7 @@ geodash.layers.init_featurelayer_wms = function($scope, live, map_config, id, la
 };
 geodash.layers.init_featurelayer_geojson = function($scope, live, map_config, id, layerConfig)
 {
-  var url = layerConfig.geojson.url || layerConfig.source.url || layerConfig.url;
+  var url = extract("geojson.url", layerConfig) || extract("source.url", layerConfig) || extract("url", layerConfig);
   $.ajax({
     url: url,
     dataType: "json",
